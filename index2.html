@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Validation</title>
+</head>
+<body>
+
+<form id="editorForm">
+ 
+  <label for="firstName">Enter First Name:</label>
+  <input type="text" id="firstName">
+  <span id="firstNameError" style="color: red;"></span><br>
+  
+  <label for="lastName">Enter Last Name:</label>
+  <input type="text" id="lastName">
+  <span id="lastNameError" style="color: red;"></span><br>
+  
+  <label for="birthdate">Enter a BirthDate:</label>
+  <input type="date" id="birthdate">
+  <span id="birthdateError" style="color: red;"></span><br>
+  
+  <label for="email">Enter an Email:</label>
+  <input type="email" id="email">
+  <span id="emailError" style="color: red;"></span><br>
+  
+  <label for="confirmEmail">Confirm Email:</label>
+  <input type="email" id="confirmEmail">
+  <span id="confirmEmailError" style="color: red;"></span><br>
+  
+  <label for="password">Password (min 6 characters, at least one uppercase, one lowercase, one number, and one special character):</label>
+  <input type="password" id="password">
+  <span id="passwordError" style="color: red;"></span><br>
+  
+  <label for="confirmPassword">Confirm Password:</label>
+  <input type="password" id="confirmPassword">
+  <span id="confirmPasswordError" style="color: red;"></span><br>
+
+  <button type="submit" id="submitButton" style="display: none;">Submit</button>
+</form>
+
+<script>
+  var form = document.getElementById("editorForm");
+  var firstNameInput = document.getElementById("firstName");
+  var lastNameInput = document.getElementById("lastName");
+  var birthdateInput = document.getElementById("birthdate");
+  var emailInput = document.getElementById("email");
+  var confirmEmailInput = document.getElementById("confirmEmail");
+  var passwordInput = document.getElementById("password");
+  var confirmPasswordInput = document.getElementById("confirmPassword");
+
+  var firstNameErrorSpan = document.getElementById("firstNameError");
+  var lastNameErrorSpan = document.getElementById("lastNameError");
+  var birthdateErrorSpan = document.getElementById("birthdateError");
+  var emailErrorSpan = document.getElementById("emailError");
+  var confirmEmailErrorSpan = document.getElementById("confirmEmailError");
+  var passwordErrorSpan = document.getElementById("passwordError");
+  var confirmPasswordErrorSpan = document.getElementById("confirmPasswordError");
+
+  var submitButton = document.getElementById("submitButton");
+
+  function validateForm() {
+    var firstName = firstNameInput.value;
+    var lastName = lastNameInput.value;
+    var birthdate = birthdateInput.value;
+    var email = emailInput.value;
+    var confirmEmail = confirmEmailInput.value;
+    var password = passwordInput.value;
+    var confirmPassword = confirmPasswordInput.value;
+
+    
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+
+        firstNameErrorSpan.textContent = "";
+    lastNameErrorSpan.textContent = "";
+    birthdateErrorSpan.textContent = "";
+    emailErrorSpan.textContent = "";
+    confirmEmailErrorSpan.textContent = "";
+    passwordErrorSpan.textContent = "";
+    confirmPasswordErrorSpan.textContent = "";
+
+    
+    var isValid = true;
+
+    if (!firstName.match(/^[a-zA-Z]*$/)) {
+      firstNameErrorSpan.textContent = "First Name should only contain alphabets.";
+      isValid = false;
+    }
+
+    if (!lastName.match(/^[a-zA-Z]*$/)) {
+      lastNameErrorSpan.textContent = "Last Name should only contain alphabets.";
+      isValid = false;
+    }
+
+    if (!birthdate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      birthdateErrorSpan.textContent = "Invalid birthdate format.";
+      isValid = false;
+    }
+
+    if (!email.match(emailPattern)) {
+      emailErrorSpan.textContent = "Invalid email format.";
+      isValid = false;
+    }
+
+    if (email !== confirmEmail) {
+      confirmEmailErrorSpan.textContent = "Emails do not match.";
+      isValid = false;
+    }
+
+    if (!password.match(passwordPattern)) {
+      passwordErrorSpan.textContent = "Password must be at least 6 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
+      isValid = false;
+    }
+
+    if (password !== confirmPassword) {
+      confirmPasswordErrorSpan.textContent = "Passwords do not match.";
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  form.addEventListener("input", function() {
+    var isValid = validateForm();
+    if (isValid) {
+      submitButton.style.display = "block";
+    } else {
+      submitButton.style.display = "none";
+    }
+  });
+</script>
+
+</body>
+</html>
