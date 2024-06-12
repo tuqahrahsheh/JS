@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Images</title>
+</head>
+<body>
+    <select id="animalSelect" onchange="changeImage()">
+    </select>
+    <br>
+    <img id="animalImage" src="" alt="Animal Image">
+    
+    <script>
+        
+        async function fetchData(url) {
+            const response = await fetch(url);
+            const data = await response.json();
+            return data;
+        }
+
+        async function Dropdown() {
+            const select = document.getElementById("animalSelect");
+            const animals = await fetchData("https://66681676f53957909ff67af8.mockapi.io/users/Animals");
+
+            animals.forEach(animal => {
+                const option = document.createElement("option");
+                option.value = animal.image;
+                option.textContent = animal.name;
+                select.appendChild(option);
+            });
+            const defaultOption = select.querySelector('option[value="https://via.placeholder.com/150?text=Dog"]');
+            select.selectedIndex = defaultOption.index;
+            changeImage();
+        }
+
+    
+        function changeImage() {
+            const select = document.getElementById("animalSelect");
+            const image = document.getElementById("animalImage");
+            const selectedOption = select.options[select.selectedIndex];
+            const imageUrl = selectedOption.value;
+            image.src = imageUrl;
+        }
+
+        window.onload = Dropdown;
+    </script>
+</body>
+</html>
